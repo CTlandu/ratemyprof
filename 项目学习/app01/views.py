@@ -271,3 +271,13 @@ def mobile_edit(request, nid):
 def mobile_delete(request, nid):
     models.PrettyNum.objects.filter(id=nid).delete()
     return redirect("/mobile/list/") 
+
+
+def admin_list(request):
+    queryset = models.Admin.objects.all()
+    page_object = Pagination(request,queryset)
+    context = {
+        'queryset':page_object.page_queryset,
+        "page_string":page_object.html()
+        }
+    return render(request, 'admin_list.html',context)
