@@ -35,5 +35,6 @@ urlpatterns = [
     path('mobile/add/',views.mobile_add),
     path('mobile/<int:nid>/edit/', views.mobile_edit),
     path('mobile/<int:nid>/delete/', views.mobile_delete),
-    path('admin/list/',views.admin_list)
+    path('admin/list/',views.admin_list),
+    path('admin/add/',views.admin_add)
 ]

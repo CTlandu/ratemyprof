@@ -3,6 +3,7 @@ from socket import fromshare
 from tokenize import endpats
 from xml.dom import ValidationErr
 from django.shortcuts import render,redirect
+from matplotlib import widgets
 from app01 import models
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
@@ -10,6 +11,7 @@ from django.utils.safestring import mark_safe
 
 from app01.utils.pagination import Pagination
 from app01.utils.bootstrap import BootStrapModelForm
+from app01.utils.encrypt import md5
 
 # Create your views here.
 def depart_list(request):
@@ -274,10 +276,56 @@ def mobile_delete(request, nid):
 
 
 def admin_list(request):
-    queryset = models.Admin.objects.all()
+    data_dict = {}
+    search_data = request.GET.get('q',"")
+    if search_data:
+        data_dict["username__contains"] = search_data
+        
+    queryset = models.Admin.objects.filter(**data_dict)
     page_object = Pagination(request,queryset)
     context = {
         'queryset':page_object.page_queryset,
-        "page_string":page_object.html()
+        "page_string":page_object.html(),
+        "search_data":search_data
         }
     return render(request, 'admin_list.html',context)
+
+class AdminModelForm(BootStrapModelForm):
+    
+    confirm_password = forms.CharField(
+        label="确认密码",
+        widget = forms.PasswordInput
+        )
+    
+    class Meta:
+        model = models.Admin
+        fields = ["username","password","confirm_password"]
+        widgets = {
+            "password":forms.PasswordInput(render_value=True) #render_value=True:如果密码输入不一致，会在输入框中保留原输入的密码
+            }
+    
+    def clean_password(self):
+        pwd = self.cleaned_data.get("password")
+        return md5(pwd)  #md5 import from utils.encrypt.py,一个用于加密的函数
+        #basically就是要先把输入的密码加密，再存入到数据库
+    
+    #钩子函数，用于确认密码
+    def clean_confirm_password(self):
+        pwd = self.cleaned_data.get("password")
+        confirm = md5(self.cleaned_data.get("confirm_password")) #这里同样需要比较confirm_pwd的加密版，不然永远和pwd不一致
+        if confirm != pwd:
+            raise ValidationError("密码不一致")
+        return confirm   #这里要return confirm, which is 用户输入的密码，因为这样会将return的值保存到数据库
+        
+def admin_add(request):
+    '''添加管理员'''
+    title = "新建管理员"
+    if request.method == "GET":
+        form = AdminModelForm()
+        return render(request,"change.html", {"title":title,"form":form})
+    form = AdminModelForm(data=request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect('/admin/list/')
+    
+    return render(request, 'change.html', {"title":title,"form":form})
