@@ -3,6 +3,7 @@ from socket import fromshare
 from tokenize import endpats
 from xml.dom import ValidationErr
 from django.shortcuts import render,redirect
+from django.urls import is_valid_path
 from matplotlib import widgets
 from app01 import models
 from django.core.validators import RegexValidator
@@ -317,6 +318,43 @@ class AdminModelForm(BootStrapModelForm):
             raise ValidationError("密码不一致")
         return confirm   #这里要return confirm, which is 用户输入的密码，因为这样会将return的值保存到数据库
         
+class AdminEditModelForm(BootStrapModelForm):
+    class Meta:
+        model = models.Admin
+        fields = ['username']
+
+class AdminResetModelForm(BootStrapModelForm):
+    confirm_password = forms.CharField(
+        label="确认密码",
+        widget = forms.PasswordInput
+        )
+    class Meta:
+        model = models.Admin
+        fields = ["password","confirm_password"]
+        widgets = {
+            "password":forms.PasswordInput(render_value=True)      #render_value=True:如果密码输入不一致，会在输入框中保留原输入的密码
+            }
+    def clean_password(self):
+        pwd = self.cleaned_data.get("password")
+        md5_pwd = md5(pwd)
+        #md5 import from utils.encrypt.py,一个用于加密的函数
+        #basically就是要先把输入的密码加密，再存入到数据库
+        
+        #新功能：去数据库校验当前密码和新输入的密码是否一致
+        exists = models.Admin.objects.filter(id=self.instance.pk,password = md5_pwd).exists()
+        if exists:
+            raise ValidationError("不能与以前的密码相同")
+        return md5_pwd 
+
+    #钩子函数，用于确认密码
+    def clean_confirm_password(self):
+        pwd = self.cleaned_data.get("password")
+        confirm = md5(self.cleaned_data.get("confirm_password")) #这里同样需要比较confirm_pwd的加密版，不然永远和pwd不一致
+        if confirm != pwd:
+            raise ValidationError("密码不一致")
+        return confirm   #这里要return confirm, which is 用户输入的密码，因为这样会将return的值保存到数据库
+
+
 def admin_add(request):
     '''添加管理员'''
     title = "新建管理员"
@@ -329,3 +367,46 @@ def admin_add(request):
         return redirect('/admin/list/')
     
     return render(request, 'change.html', {"title":title,"form":form})
+
+def admin_edit(request, nid):
+    '''编辑管理员'''
+    title = "编辑管理员"
+    #对象/None
+    row_object = models.Admin.objects.filter(id=nid).first()
+    if not row_object:
+        #进入错误界面
+        #return render(request, "error.html",{"msg":"数据不存在"})
+        return redirect('/admin/list/')
+    if request.method == "GET":
+        form = AdminEditModelForm(instance=row_object)
+        return render(request, 'change.html', {"form":form,"title":title})
+    
+    form = AdminEditModelForm(data=request.POST, instance=row_object)
+    if form.is_valid():
+        form.save()
+        return redirect('/admin/list/')
+    
+    return render(request, 'change.html', {"form":form,"title":title})
+
+def admin_delete(request, nid):
+    '''管理员删除'''
+    models.Admin.objects.filter(id=nid).delete()
+    return redirect('/admin/list/')
+
+def admin_reset(request, nid):
+    row_object = models.Admin.objects.filter(id=nid).first()
+    if not row_object:
+        #进入错误界面
+        #return render(request, "error.html",{"msg":"数据不存在"})
+        return redirect('/admin/list/')
+    title = "重置密码 - {}".format(row_object.username)
+    
+    if request.method == "GET":   
+        form = AdminResetModelForm()
+        return render(request, 'change.html', {"form":form,"title":title})
+    
+    form = AdminResetModelForm(data=request.POST, instance = row_object)
+    if form.is_valid():
+        form.save()
+        return redirect('/admin/list/')
+    return render(request, 'change.html', {"form":form,"title":title})
