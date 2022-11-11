@@ -277,6 +277,14 @@ def mobile_delete(request, nid):
 
 
 def admin_list(request):
+    
+    # 检查用户是否已经登录，已登录，继续向下走。未登录，跳转回登陆界面。
+    # 用户发来请求，获取cookie随机字符串，拿着随机字符串看看session中有没有。
+    # request.session["info"]
+    info = request.session.get("info")
+    if not info:  #若没登陆
+        return redirect("/login/" )
+    
     data_dict = {}
     search_data = request.GET.get('q',"")
     if search_data:
