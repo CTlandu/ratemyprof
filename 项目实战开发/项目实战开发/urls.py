@@ -19,4 +19,6 @@ from mainapp import views
 
 urlpatterns = [
     path('index/',views.index),
+    path('instru_result/',views.instructor_result),
+    
 ]

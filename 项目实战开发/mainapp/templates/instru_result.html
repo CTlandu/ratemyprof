@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block css %}
+  <style>
+    .search-bar{
+      margin-left: 5%;
+    }
+    .result{
+      width: 1000px;
+      height:50px;
+      margin: 50px;
+      border: 1px solid black;
+      padding: 10px;
+    }
+  </style>
+{% endblock css %}
+
+{% block content %}
+
+<div class="search-bar">
+  <div class="row">
+    </div><!-- /.col-lg-6 -->
+    <div class="col-lg-6">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Instructor Name">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button">Search</button>
+        </span>
+      </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+  </div><!-- /.row -->
+</div>
+
+<div class="result">
+  Instructor Name: {{ inst_name }}         Rate: {{ rate }}
+</div>
+{% endblock content %}
+
+
+

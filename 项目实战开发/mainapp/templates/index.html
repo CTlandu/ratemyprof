@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block css %}
+  <style>
+    .search-bar{
+      margin-top:100px;
+      margin-left:33%;
+    }
+    .schools{
+      margin-left:10%;
+      margin-top:100px;
+    }
+    .text{
+      font-family:"Times New Roman", Times, Serif;
+      font-size: "15px";
+      text-align: center;
+    }
+  </style>
+{% endblock css %}
+
+
+{% block content %}
+<div class="search-bar">
+  <div class="row">
+    </div><!-- /.col-lg-6 -->
+    <div class="col-lg-6">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Instructor Name">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button">Search</button>
+        </span>
+      </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+  </div><!-- /.row -->
+</div>
+<div class="schools">
+  <p class="text"> <big>Supported Schools:</big></p>
+  <div class="school-pic" >
+    <div>
+      <img src="/static/picture/CUHK-Shenzhen38.jpg" width="300" height="180" alt="CUHKSZ">
+      <p class="text">CUHKSZ</p>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
