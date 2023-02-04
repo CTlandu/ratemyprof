@@ -8,3 +8,6 @@ def index(request):
 
 def instructor_result(request):
     return render(request, "instru_result.html")
+
+def instructor_detail(request):
+    return render(request, "instru_detail.html")

@@ -3,37 +3,72 @@
 {% block css %}
   <style>
     .search-bar{
-      margin-left: 5%;
+      margin-left:25%;
+      margin-right:10%;
     }
-    .result{
+    .normal{
       width: 1000px;
       height:50px;
-      margin: 50px;
-      border: 1px solid black;
-      padding: 10px;
+      margin-left: 5%;
+      padding-top: 10px;
+    }
+
+    .row_element{
+      padding-right:20px;
+    }
+
+    .element{
+      align:auto;
+      padding-left:24px;
+      padding-right:24px;
     }
   </style>
 {% endblock css %}
 
 {% block content %}
 
+
 <div class="search-bar">
   <div class="row">
     </div><!-- /.col-lg-6 -->
-    <div class="col-lg-6">
+    <div class="col-lg-8">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Instructor Name">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="button">Search</button>
+          <button class="btn btn-primary" type="button">Search</button>
         </span>
       </div><!-- /input-group -->
     </div><!-- /.col-lg-6 -->
   </div><!-- /.row -->
 </div>
-
-<div class="result">
-  Instructor Name: {{ inst_name }}         Rate: {{ rate }}
+<div class="normal">
+  <span class="badge text-bg-primary fs-5">搜索结果</span>
 </div>
+<div class="normal">
+  <div class="list-group d-grid gap-2 border-0 w-auto">
+    <label class="list-group-item rounded-3 py-2" >
+      <div ></div>
+      <span class="fs-5 element">李想</span>
+      <span class="badge bg-secondary fs-5 element">4.5/5</span>
+      <span class="element">西交利物浦</span></span>
+      <span class="fs-6 element">计算机科学</span>
+      <button class="btn btn-primary" type="submit">查看</button>
+      <span class="fs-6 element">55个评分</span>
+    </label>
+    <label class="list-group-item rounded-3 py-2" >
+      <div ></div>
+      <span class="fs-5 element">李想</span>
+      <span class="badge bg-secondary fs-5 element">3.2/5</span>
+      <span class="element">香港中文大学（深圳）</span></span>
+      <span class="fs-6 element">数学</span>
+      <button class="btn btn-primary" type="submit">查看</button>
+      <span class="fs-6 element">2个评分</span>
+    </label>
+  
+    
+  </div>
+</div>
+
 {% endblock content %}
 
 
