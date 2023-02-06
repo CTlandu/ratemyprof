@@ -1,7 +1,39 @@
 {% extends "layout.html" %}
 
+{% block css %}
+<style>
+  .common{
+    margin-left:10%;
+    margin-top: 24px;
+  }
+  .words{
+    margin-left:12px;
+    margin-right:12px;
+  }
+
+</style>
+{% endblock css%}
+
+
 {% block content %}
-<h1>1234</h1>
+<div>
+  <p class="common">
+    <span class="fs-1">4.5/5</span>
+    <span class="fs-5" style="padding-left: 24px;">by 25 ratings</span>
+  </p>
+  <div class="common">
+    <span class="fs-1">李想</span>
+    <span class="fs-5" style="padding-left:24px;">数学 | CUHKSZ</span>
+  </div>
+  <div class="common">
+    <span class="fs-4 badge text-bg-primary">难度</span>
+    <span class="fs-4 words">3 <i class="bi bi-three-dots-vertical"></i></span>
+    <span class="fs-4 badge text-bg-primary">给分</span>
+    <span class="fs-4 words">4 <i class="bi bi-three-dots-vertical"></i></span>
+    <span class="fs-4 badge text-bg-primary">课程质量</span>
+    <span class="fs-4 words">4 </span>
+  </div>
+</div>
 {% endblock content %}
 
 
