@@ -1,5 +1,5 @@
 """
-ASGI config for 项目实战开发 project.
+ASGI config for rmpcn project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', '项目实战开发.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rmpcn.settings')
 
 application = get_asgi_application()

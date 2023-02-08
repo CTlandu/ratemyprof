@@ -1,5 +1,5 @@
 """
-WSGI config for 项目实战开发 project.
+WSGI config for rmpcn project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', '项目实战开发.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rmpcn.settings')
 
 application = get_wsgi_application()
