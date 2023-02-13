@@ -11,3 +11,6 @@ def instructor_result(request):
 
 def instructor_detail(request):
     return render(request, "instru_detail.html")
+
+def profile_basic(request):
+    return render(request, "profile_basic.html")

@@ -21,4 +21,5 @@ urlpatterns = [
     path('index/',views.index),
     path('instru_result/',views.instructor_result),
     path('instru_detail/',views.instructor_detail),
+    path('profile/basic/',views.profile_basic),
 ]
